@@ -30,12 +30,14 @@ class Network {
         int volume;
 
         bool operator < (const Demand &demand) const {
-            return volume < demand.volume;
+            return destinationNode < demand.destinationNode;
         }
+
     };
 
     int demandsNumber;
     vector<Demand> demandsList;
+    vector< vector<Demand> > sortedDemands;
     Graph graph;
     int pathAndSlicesSize;
     int **paths;
@@ -54,6 +56,8 @@ public:
 
     void readPaths(string pathsFilepath, string socketsFilepath);
 
+    void initializeSortedVector();
+
     void sortDemands();
 
     void printPaths();
@@ -61,5 +65,7 @@ public:
     void printDemands();
 
     void printGraph();
+
+    void printSortedDemands();
 };
 

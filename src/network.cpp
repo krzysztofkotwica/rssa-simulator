@@ -115,8 +115,20 @@ void Network::readDemands(string demandsFilepath) {
     }
 }
 
+void Network::initializeSortedVector() {
+    for (int l = 0; l < graph.nodesNumber; l++) {
+        sortedDemands.push_back( vector<Demand>() );
+    }
+}
+
 void Network::sortDemands() {
-    sort(demandsList.begin(), demandsList.end());
+    Network::initializeSortedVector();
+    for (vector<Demand>::iterator it = demandsList.begin(); it != demandsList.end(); it++) {
+        sortedDemands[it->sourceNode].push_back(it.operator*());
+    }
+    for (vector< vector<Demand> >::iterator itVector = sortedDemands.begin(); itVector != sortedDemands.end(); itVector++) {
+       sort(itVector.operator*().begin(), itVector.operator*().end());
+    }
 }
 
 void Network::printGraph() {
@@ -145,5 +157,13 @@ void Network::printPaths() {
 void Network::printDemands() {
     for (vector<Demand>::iterator it = demandsList.begin(); it != demandsList.end(); it++) {
         printf("%d %d %d\n", it->sourceNode, it->destinationNode, it->volume);
+    }
+}
+
+void Network::printSortedDemands() {
+    for (vector< vector<Demand> >::iterator itVector = sortedDemands.begin(); itVector != sortedDemands.end(); itVector++) {
+        for (vector<Demand>::iterator it = itVector.operator*().begin(); it != itVector.operator*().end(); it++) {
+            printf("%d %d %d\n", it->sourceNode, it->destinationNode, it->volume);
+        }
     }
 }

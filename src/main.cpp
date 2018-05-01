@@ -25,7 +25,8 @@ int main() {
 //    cout << endl << "//////////////////////////////////////////////" << endl;
 //    Network.printPaths();
 //    cout << endl << "//////////////////////////////////////////////" << endl;
- //   Network.printDemands();
+//    Network.printDemands();
+    Network.printSortedDemands();
 
     return 0;
 }
