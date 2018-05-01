@@ -19,12 +19,13 @@ int main() {
     Network.readGraph(graphPath);
     Network.readPaths(pathsPath, socketsPath);
     Network.readDemands(demandsPath);
+    Network.sortDemands();
 
-    Network.printGraph();
+   // Network.printGraph();
 //    cout << endl << "//////////////////////////////////////////////" << endl;
 //    Network.printPaths();
 //    cout << endl << "//////////////////////////////////////////////" << endl;
-//    Network.printDemands();
+ //   Network.printDemands();
 
     return 0;
 }

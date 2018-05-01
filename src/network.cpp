@@ -115,6 +115,10 @@ void Network::readDemands(string demandsFilepath) {
     }
 }
 
+void Network::sortDemands() {
+    sort(demandsList.begin(), demandsList.end());
+}
+
 void Network::printGraph() {
     printf("\n");
     for (int i = 0; i < graph.nodesNumber; i++) {

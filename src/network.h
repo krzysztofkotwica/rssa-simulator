@@ -29,7 +29,7 @@ class Network {
         int destinationNode;
         int volume;
 
-        bool operator<(const Demand &demand) const {
+        bool operator < (const Demand &demand) const {
             return volume < demand.volume;
         }
     };
@@ -53,7 +53,8 @@ public:
     void readDemands(string demandsFilepath);
 
     void readPaths(string pathsFilepath, string socketsFilepath);
-    //void sortDemands();
+
+    void sortDemands();
 
     void printPaths();
 
