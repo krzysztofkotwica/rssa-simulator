@@ -16,7 +16,7 @@ void Network::readGraph(string graphFilepath) {
     if (graphFile.is_open()) {
         graphFile >> graph.nodesNumber;
         graphFile >> graph.linksNumber;
-        graph.edges = new Edge *[graph.nodesNumber];  //edge-link
+        graph.edges = new Edge *[graph.nodesNumber];
         for (int i = 0; i < graph.nodesNumber; i++) {
             graph.edges[i] = new Edge[graph.nodesNumber];
         }
@@ -117,7 +117,7 @@ void Network::readDemands(string demandsFilepath) {
 
 void Network::initializeSortedVector() {
     for (int l = 0; l < graph.nodesNumber; l++) {
-        sortedDemands.push_back( vector<Demand>() );
+        sortedDemands.push_back(vector<Demand>());
     }
 }
 
@@ -126,9 +126,64 @@ void Network::sortDemands() {
     for (vector<Demand>::iterator it = demandsList.begin(); it != demandsList.end(); it++) {
         sortedDemands[it->sourceNode].push_back(it.operator*());
     }
-    for (vector< vector<Demand> >::iterator itVector = sortedDemands.begin(); itVector != sortedDemands.end(); itVector++) {
-       sort(itVector.operator*().begin(), itVector.operator*().end());
+    for (vector<vector<Demand> >::iterator itVector = sortedDemands.begin();
+         itVector != sortedDemands.end(); itVector++) {
+        sort(itVector.operator*().begin(), itVector.operator*().end());
     }
+}
+
+void Network::greedySolve() {
+    int start, end, volume, pathTableNumber, slice, edgeNumber = 0, lowest = 0, allocated = 0;
+    vector<int>::iterator pos;
+    while (!demandsList.empty()) {
+        start = demandsList.front().sourceNode;
+        end = demandsList.front().destinationNode;
+        volume = demandsList.front().volume;
+
+        for (int i = 0; i < numberOfPossiblePathsAndSizes; i++)
+        {
+            if (paths[i][graph.linksNumber == pathNumber && paths[i][graph.linksNumber + 1] == start && paths[i][graph.linksNumber + 2] == end)
+            {
+                pathTableNumber = i;
+                break;
+            }
+        }
+
+        for (int i = 0; i < graph.E; i++)
+        {
+            if (paths[pathTableNumber][i] == 1)
+            {
+                slice = calculateSlices(pathTableNumber, volume);
+                for (int j = 0; j < graph.V; j++)
+                {
+                    for (int k = 0; k < graph.V; k++)
+                    {
+                        if (graph.edges[j][k].pathBinaryNumber == i)
+                        {
+                            pos = min_element(graph.edges[j][k].cores.begin(), graph.edges[j][k].cores.end());
+                            *pos += slice;
+                            allocated = 1;
+                            break;
+                        }
+                    }
+                    if (allocated == 1)
+                    {
+                        allocated = 0;
+                        break;
+                    }
+                }
+            }
+        }
+        demandList.erase(demandList.begin());
+    }
+}
+
+int Network::calculateSlices(int point, int volume)
+{
+    int returnSlices;
+    int column = volume / 50;
+    returnSlices = sliceSize[point][column];
+    return(returnSlices);
 }
 
 void Network::printGraph() {
@@ -139,7 +194,7 @@ void Network::printGraph() {
 //            if (graph.edges[i][j].pathBinaryNumber != -1)
 //                //printf(" %1d ", graph.edges[i][j].pathBinaryNumber);
 //            else
-                printf("  ");
+            printf("  ");
         }
         printf("\n");
     }
@@ -161,7 +216,8 @@ void Network::printDemands() {
 }
 
 void Network::printSortedDemands() {
-    for (vector< vector<Demand> >::iterator itVector = sortedDemands.begin(); itVector != sortedDemands.end(); itVector++) {
+    for (vector<vector<Demand> >::iterator itVector = sortedDemands.begin();
+         itVector != sortedDemands.end(); itVector++) {
         for (vector<Demand>::iterator it = itVector.operator*().begin(); it != itVector.operator*().end(); it++) {
             printf("%d %d %d\n", it->sourceNode, it->destinationNode, it->volume);
         }

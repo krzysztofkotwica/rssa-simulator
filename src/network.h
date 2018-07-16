@@ -17,8 +17,8 @@ class Network {
     };
 
     struct Graph {
-        int nodesNumber;
-        int linksNumber;
+        int nodesNumber; //V
+        int linksNumber; //E
         int coresNumber;
         int demandsNumber;
         Edge **edges;
@@ -59,6 +59,10 @@ public:
     void initializeSortedVector();
 
     void sortDemands();
+
+    void greedySolve();
+
+    int calculateSlices(int point, int volume);
 
     void printPaths();
 
